@@ -1,8 +1,8 @@
 require("dotenv").config();
 const area_id = process.env.AREA_ID;
 
-const { GetAllowance, GetAreaInfo, CheckAllowance } = require("../modules/esp_utils.js");
-const { GetAreaInfoMDB, UpdateAreaInfoMDB, UpdateMDB } = require("../modules/mongodb_utils.js");
+const { GetAllowance, GetAreaInfo, CheckAllowance } = require("../utils/esp_utils.js");
+const { GetAreaInfoMDB, UpdateAreaInfoMDB, UpdateMDB } = require("../utils/mongodb_utils.js");
 
 CheckAllowance().then((res) => {
   if (res.valid) {
