@@ -34,8 +34,14 @@ const GetAllowance = async () => {
 
 const GetAreaInfo = async (id, test) => {
   let res_data;
+  let working_url;
+  if (test !== null || undefined || "") {
+    working_url = `https://developer.sepush.co.za/business/2.0/area?id=${id}&test=${test}`;
+  } else {
+    working_url - `https://developer.sepush.co.za/business/2.0/area?id=${id}`;
+  }
   await axios
-    .get(`https://developer.sepush.co.za/business/2.0/area?id=${id}&test=${test}`, {
+    .get(working_url, {
       headers: {
         token: `${esp_key}`,
       },

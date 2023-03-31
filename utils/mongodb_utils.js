@@ -1,9 +1,10 @@
 require("dotenv").config();
 const axios = require("axios");
-const { GetAllowance, GetAreaInfo, CheckAllowance } = require("./esp_utils.js");
+const { GetAreaInfo } = require("./esp_utils.js");
 
 const mongodb_key = process.env.MONGODB_API_KEY;
 const area_id = process.env.AREA_ID;
+const doc_id = process.env.MONGODB_DOC_ID;
 
 const GetAreaInfoMDB = async () => {
   let res_data;
@@ -42,7 +43,7 @@ const UpdateAreaInfoMDB = async (areaInfo_data) => {
     collection: "AreaInformation",
     database: "ESP-DB",
     dataSource: "DataCluster",
-    filter: { _id: { $oid: "6425ed2cdc8f8eb92fed19a9" } },
+    filter: { _id: { $oid: `${doc_id}` } },
     update: {
       $set: {
         area_info: {
@@ -83,7 +84,7 @@ const UpdateMDB = async () => {
   await GetAreaInfoMDB().then((res) => {
     current_data = JSON.stringify(res);
   });
-  await GetAreaInfo(area_id, "future").then((res) => {
+  await GetAreaInfo(area_id).then((res) => {
     latest_data = JSON.stringify(res);
   });
   // console.log(`CURRENT DATA:\n${JSON.stringify(current_data)}\nLATEST DATA:\n${JSON.stringify(latest_data)}`);
