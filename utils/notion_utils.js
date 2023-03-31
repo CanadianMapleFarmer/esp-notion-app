@@ -1,9 +1,7 @@
 require("dotenv").config();
 const notion_key = process.env.NOTION_API_KEY;
 const notion_page_id = process.env.NOTION_PAGE_ID;
-const sleep = (milliseconds) => {
-  return new Promise((resolve) => setTimeout(resolve, milliseconds));
-};
+const sleep = require("atomic-sleep");
 
 const { Client } = require("@notionhq/client");
 const notion = new Client({ auth: notion_key });
@@ -19,26 +17,22 @@ const AppendPageData = async () => {
   const blockId = `${notion_page_id}`;
 
   let i = 1;
-  addAppendData();
-  function addAppendData() {
-    setTimeout(function () {
-      events.forEach(async (event) => {
-        let stage_ = event.note;
-        let start_ = event.start;
-        let end_ = event.end;
-        let stage_color_;
-        let stage_num = stage_.split(" ")[1];
-        if (stage_num >= 6) {
-          stage_color_ = "red";
-        } else if (stage_num >= 4) {
-          stage_color_ = "orange";
-        } else {
-          stage_color_ = "yellow";
-        }
-        await AppendNotionBlock(stage_, start_, end_, stage_color_, i++);
-      });
-    }, 5000);
-  }
+  events.forEach(async (event) => {
+    let stage_ = event.note;
+    let start_ = event.start;
+    let end_ = event.end;
+    let stage_color_;
+    let stage_num = stage_.split(" ")[1];
+    if (stage_num >= 6) {
+      stage_color_ = "red";
+    } else if (stage_num >= 4) {
+      stage_color_ = "orange";
+    } else {
+      stage_color_ = "yellow";
+    }
+    await AppendNotionBlock(stage_, start_, end_, stage_color_, i++);
+    sleep(5000);
+  });
 
   async function AppendNotionBlock(stage, start_datetime, end_datetime, stage_color, i) {
     await notion.blocks.children

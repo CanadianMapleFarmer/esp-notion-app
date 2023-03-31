@@ -15,4 +15,4 @@ CheckAllowance().then((res) => {
 
 // UpdateMDB();
 
-// AppendPageData();
+AppendPageData();
